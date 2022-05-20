@@ -43,7 +43,7 @@ def custom_subtitles(video_id):
         else:
             seconds = str(round(time))
             min, sec = '0', seconds
-        start_time = f'{min.zfill(2)}:{sec.zfill(2)}'
+        start_time = f'{str(min).zfill(2)}:{str(sec).zfill(2)}'
         subtitle['start'] = start_time
     return subtitle_lst
 
