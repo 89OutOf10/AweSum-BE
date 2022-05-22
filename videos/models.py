@@ -9,5 +9,5 @@ class Video(models.Model):
 class Subtitle(models.Model):
     videoid = models.ForeignKey(Video, on_delete=models.CASCADE, null=True)
     text = models.TextField()
-    start = models.TextField()
+    time = models.TextField()
     sub_num = models.IntegerField(default=1, null=True)

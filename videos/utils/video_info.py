@@ -1,3 +1,4 @@
+import datetime
 import re
 from urllib.parse import urlparse, parse_qs
 from youtube_transcript_api import YouTubeTranscriptApi
@@ -31,20 +32,10 @@ def video_subtitles(video_id):
 def custom_subtitles(video_id):
     subtitle_lst = YouTubeTranscriptApi.get_transcript(video_id)
     for subtitle in subtitle_lst:
-        time = subtitle['start']
-        if time >= 60.0:
-            minutes = round(time / 60, 2)
-            min, sec = str(minutes).split('.')
-            sec = int(sec)
-            min = int(min)
-            if sec >= 60:
-                sec = sec - 60
-                min += 1
-        else:
-            seconds = str(round(time))
-            min, sec = '0', seconds
-        start_time = f'{str(min).zfill(2)}:{str(sec).zfill(2)}'
-        subtitle['start'] = start_time
+        start_time = subtitle['start']
+        start_time = int(start_time)
+        time = str(datetime.timedelta(seconds=start_time))
+        subtitle['time'] = time
     return subtitle_lst
 
     
