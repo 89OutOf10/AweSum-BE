@@ -53,10 +53,11 @@ def saveVideo(request):
         url = request.data.get("url", "")
         if url:
             vid = video_id(url)
+            texts = video_subtitles(vid)
             transcripts = custom_subtitles(vid)
             check_vid = Video.objects.filter(videoid=vid)
             if not check_vid:
-                video = Video(videoid=vid, transcript=transcripts)
+                video = Video(videoid=vid, transcript=texts)
                 video.save()
                 for transcript in transcripts:
                     subtitle = Subtitle(videoid=video, text=transcript['text'], time=transcript['time'])
@@ -65,7 +66,7 @@ def saveVideo(request):
                 return Response(serializer.data, status=200)
             else:
                 video = Video.objects.get(videoid=vid)
-                video.transcript = transcripts
+                video.transcript = texts
                 video.save()
                 pk = video.id
                 subtitles = Subtitle.objects.filter(videoid=pk)
